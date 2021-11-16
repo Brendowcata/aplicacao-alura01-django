@@ -2,6 +2,7 @@ from django.shortcuts import get_object_or_404, render, redirect
 from receitas.models import Receita
 
 def buscar(request):
+    """Busca receitas no sistema filtrando por nome """
     lista_receitas = Receita.objects.order_by('-date_receita').filter(publicada=True)
 
     if 'buscar' in request.GET:

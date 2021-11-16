@@ -5,7 +5,7 @@ from django.contrib import auth, messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 def index(request):
-
+    """Trás todas as receitas publicadas, ordena por data e faz a paginação """
     receitas = Receita.objects.order_by('-date_receita').filter(publicada=True)
     paginator = Paginator(receitas, 6)
     page = request.GET.get('page')
@@ -17,6 +17,7 @@ def index(request):
     return render(request,'receitas/index.html', dados)
 
 def receita(request, receita_id):
+    """Pega os dados da receita pelo id e manda para o template de receita.html """
     receita = get_object_or_404(Receita, pk=receita_id)
     receita_a_exibir = {
         'receita':receita
@@ -24,6 +25,7 @@ def receita(request, receita_id):
     return render(request,'receitas/receita.html', receita_a_exibir)
 
 def cria_receita(request):
+    """Verifica os campos de cadastro de receita e salva no sistema """
     if request.method == 'POST':
         nome_receita = request.POST['nome_receita']
         ingredientes = request.POST['ingredientes']
@@ -41,16 +43,19 @@ def cria_receita(request):
     return render(request, 'receitas/cria_receita.html')
 
 def deleta_receita(request, receita_id):
+    """Deleta a receita pegando o id """
     receita = get_object_or_404(Receita, pk=receita_id)
     receita.delete()
     return redirect('dashboard')
 
 def edita_receita(request, receita_id):
+    """Busca a receita por id e manda para o template de editar """
     receita = get_object_or_404(Receita, pk=receita_id)
     receita_a_editar = { 'receita':receita }
     return render(request, 'receitas/edita_receita.html', receita_a_editar)
 
 def atualiza_receita(request):
+    """Verifica os campos de editar e salva as alterações """
     if request.method == "POST":
         receita_id = request.POST['receita_id']
         r = Receita.objects.get(pk=receita_id)
