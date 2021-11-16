@@ -41,7 +41,6 @@ INSTALLED_APPS = [
 
     #APPS
     'receitas',
-    'pessoas',
     'usuarios',
 ]
 
